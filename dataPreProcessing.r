@@ -17,4 +17,13 @@ dataset$Purchased = factor(dataset$Purchased,
                         levels = c('No','Yes'),
                         labels = c(0, 1))
 
-print(dataset)
+#Splitting the dataset into Training set and Test set
+# install.packages('caTools')
+library('caTools')
+set.seed(123)#Forces same results
+split = sample.split(dataset$Purchased, SplitRatio = 0.8) #Splits data into categories true and false
+
+training_set = subset(dataset, split == TRUE) #recieves the subset of datasat containing true
+test_set = subset(dataset, split == FALSE) #recieves the subset of datasat containing false
+print(training_set)
+print(test_set)
