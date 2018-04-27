@@ -1,5 +1,6 @@
 dataset = read.csv('data/Data.csv')
 
+#Treating missing data
 dataset$Age = ifelse(is.na(dataset$Age), #Verifies if the field age is empty
                     ave(dataset$Age, FUN = function(x) mean(x, na.rm = TRUE)),#if the condition is true, replace by columns mean
                     dataset$Age)#if the condition is false keep the value
@@ -25,5 +26,13 @@ split = sample.split(dataset$Purchased, SplitRatio = 0.8) #Splits data into cate
 
 training_set = subset(dataset, split == TRUE) #recieves the subset of datasat containing true
 test_set = subset(dataset, split == FALSE) #recieves the subset of datasat containing false
+
+#Feature Scaling
+#The first and last columns arent numeric so we need to scale only numbers
+training_set[, 2:3] = scale(training_set[, 2:3])#Scales only columns 2 and 3
+test_set[, 2:3] = scale(test_set[, 2:3])#Scales only columns 2 and 3
+
+
+
 print(training_set)
 print(test_set)

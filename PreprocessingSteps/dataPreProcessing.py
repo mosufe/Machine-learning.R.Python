@@ -30,5 +30,14 @@ y = le_y.fit_transform(y)#Applies the transformation to the first column only
 from sklearn.cross_validation import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, random_state = 0)
 
+#Feature scaling
+#transforms every single column to a range of -1 and 1
+from sklearn.preprocessing import StandardScaler
+sc_x = StandardScaler()
+x_train = sc_x.fit_transform(x_train)
+x_test = sc_x.transform(x_test)
+print(x_train)
+print(x_test)
+
 print(x)
 print(y)
