@@ -1,0 +1,26 @@
+Methods of building a model
+
+1-All-in
+    In case of prior knowledge
+    In case you are obligded to use these variables
+    In case you are preparing for backwards elimination
+
+2-Backward Elimination
+    Step 1 - Select a significance level to stay in model
+    Step 2 - Fit the full model with all possible predictors
+    Step 3 - Consider the predictor with highest P-value. If P > significance level then select this predictor
+    Step 4 - Remove the predictor
+    Step 5 - Fit model without this variable and go back to step 3
+
+3-Forward Selection
+    Step 1 - Select a significance level to enter the model ex SL = 0.05
+    Step 2 - Fit all simple regression models y ~ x. Select the lowest P-value
+    Step 3 - Keep this bariable and fit all possible models with one extra predictor aadded to the ones you already have
+    Step 4 - Consider the predictor with lowest P-value. If P < SL go to Step 3, otherwise finish keeping the previous model
+
+4-Bidirectional Elimination
+    Step 1 - Select a significance level to enter and stay in the model
+
+5-Score Comparison
+
+Stepwise Regression
