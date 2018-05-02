@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 #Import dataset and store it in two separate vectors
-dataset = pd.read_csv('./B-Regressions/data/Salary_Data.csv')
+dataset = pd.read_csv('./B-Regressions/SimpleLinearRegression/data/Salary_Data.csv')
 x = dataset.iloc[:, :-1].values #Matrix of features
 y = dataset.iloc[:, 1].values #Dependent variables set
 

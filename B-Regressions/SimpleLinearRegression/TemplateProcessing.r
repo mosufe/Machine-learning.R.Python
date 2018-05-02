@@ -1,4 +1,4 @@
-dataset = read.csv('./B-Regressions/data/Salary_Data.csv')
+dataset = read.csv('./B-Regressions/SimpleLinearRegression/data/Salary_Data.csv')
 # dataset = dataset[, 2:3]
 
 #Splitting the dataset into Training set and Test set
