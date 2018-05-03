@@ -38,6 +38,40 @@ regressor.fit(x_train, y_train)
 #Predicting the Test set results
 y_pred = regressor.predict(x_test)
 
-print(y_test)
-print(y_pred)
+#Building the optimal model using backward elimintation
+import statsmodels.formula.api as sm
 
+#Add columns of 1s to simulate the constant b0 correspondent to the following notation y = b0 + b1x1 + bnxn
+x = np.append(arr = np.ones((50,1)).astype(int), values = x, axis = 1) #add a column of ones axis=1(adds a column)/axis=0(adds a row)
+
+#Starting backard elimination by hand
+#==========================================================================================================================
+x_opt = x[:, [0,1,2,3,4,5]] #Creating new matrix of optimized features
+regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
+print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
+
+#Removing index with highest p-value
+x_opt = x[:, [0,1,3,4,5]] #Creating new matrix of optimized features
+regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
+print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
+
+#Removing index with highest p-value
+x_opt = x[:, [0,1,3,4,5]] #Creating new matrix of optimized features
+regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
+print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
+
+#Removing index with highest p-value
+x_opt = x[:, [0,3,4,5]] #Creating new matrix of optimized features
+regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
+print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
+
+#Removing index with highest p-value
+x_opt = x[:, [0,3,5]] #Creating new matrix of optimized features
+regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
+print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
+
+#Removing index with highest p-value
+x_opt = x[:, [0,3]] #Creating new matrix of optimized features
+regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
+print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
+#==========================================================================================================================
