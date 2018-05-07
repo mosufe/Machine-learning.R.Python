@@ -1,77 +1,55 @@
+#Polinomial regression
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
 #Import dataset and store it in two separate vectors
-dataset = pd.read_csv('./B-Regressions/MultipleLinearRegression/data/50_Startups.csv')
-x = dataset.iloc[:, :-1].values #Matrix of features
-y = dataset.iloc[:, 4].values #Dependent variables set
+dataset = pd.read_csv('./B-Regressions/PolinomialLinearRegression/data/Position_Salaries.csv')
+x = dataset.iloc[:, 1:2].values #Matrix of features - Always treat the feature matrix as a matrix doing 1:2 and not just 1
+y = dataset.iloc[:, 2].values #Dependent variables set
 
-#Encoding non numerical data into numbers
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
-le_x = LabelEncoder()#Associates country names to numerical labels
-x[:, 3] = le_x.fit_transform(x[:, 3])#Applies the transformation
-
-ohe = OneHotEncoder(categorical_features=[3])#Dummy variables, prevents the algorithm to order the data as for ex France > Germany
-x = ohe.fit_transform(x).toarray()
-
-#Avoiding Dummy variable Trap
-x = x[:, 1:]#Removes the first column of x
-
-#Split the dataset into Training set and a Test set
-from sklearn.cross_validation import train_test_split
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, random_state = 0)
-
-#Feature scaling
-"""from sklearn.preprocessing import StandardScaler
-sc_x = StandardScaler()
-x_train = sc_x.fit_transform(x_train)
-x_test = sc_x.transform(x_test)
-print(x_train)
-print(x_test)"""
-
-#Fitting Multiple Linear Regression to the training set
+#Fitting linear regression to the dataset
 from sklearn.linear_model import LinearRegression
-regressor = LinearRegression()
-regressor.fit(x_train, y_train)
+lin_reg = LinearRegression()
+lin_reg.fit(x, y) 
 
-#Predicting the Test set results
-y_pred = regressor.predict(x_test)
+#Fitting polynomnial regression to the dataset
+from sklearn.preprocessing import PolynomialFeatures
+poly_reg = PolynomialFeatures(degree=4)#Changing the degree aproximates the results better
+x_poly = poly_reg.fit_transform(x)
+lin_reg_2 = LinearRegression()
+lin_reg_2.fit(x_poly, y)
 
-#Building the optimal model using backward elimintation
-import statsmodels.formula.api as sm
+#Visualizing the linear regression results
+plt.scatter(x, y, color = 'red')
+plt.plot(x,lin_reg.predict(x), color = 'blue')
+plt.title('Truth or Bluff (Linear regression)')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
 
-#Add columns of 1s to simulate the constant b0 correspondent to the following notation y = b0 + b1x1 + bnxn
-x = np.append(arr = np.ones((50,1)).astype(int), values = x, axis = 1) #add a column of ones axis=1(adds a column)/axis=0(adds a row)
+#Visualizing the polinomial regression results
+plt.scatter(x, y, color = 'red')
+plt.plot(x,lin_reg_2.predict(poly_reg.fit_transform(x)), color = 'blue')
+plt.title('Truth or Bluff (Polinomial regression)')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
 
-#Starting backard elimination by hand
-#==========================================================================================================================
-x_opt = x[:, [0,1,2,3,4,5]] #Creating new matrix of optimized features
-regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
-print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
+#Visualizing the polinomial regression results with better arccuracy
+x_grid = np.arange(min(x), max(x), 0.1)
+x_grid = x_grid.reshape(len(x_grid), 1)#Reshapes the whole x plot to avoit straight lines between points and increase precison
 
-#Removing index with highest p-value
-x_opt = x[:, [0,1,3,4,5]] #Creating new matrix of optimized features
-regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
-print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
+plt.scatter(x, y, color = 'red')
+plt.plot(x_grid,lin_reg_2.predict(poly_reg.fit_transform(x_grid)), color = 'blue')
+plt.title('Truth or Bluff (Polinomial regression)')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
 
-#Removing index with highest p-value
-x_opt = x[:, [0,1,3,4,5]] #Creating new matrix of optimized features
-regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
-print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
+#Predicting a new result with Linear Regression
+print(lin_reg.predict(6.5))
 
-#Removing index with highest p-value
-x_opt = x[:, [0,3,4,5]] #Creating new matrix of optimized features
-regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
-print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
-
-#Removing index with highest p-value
-x_opt = x[:, [0,3,5]] #Creating new matrix of optimized features
-regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
-print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
-
-#Removing index with highest p-value
-x_opt = x[:, [0,3]] #Creating new matrix of optimized features
-regressor_OLS = sm.OLS(endog = y, exog = x_opt).fit()
-print(regressor_OLS.summary())#Evaluates the multiples linear regression model in therms of p value and other parameters
-#==========================================================================================================================
+#Predicting a new result with Polinomial Regression
+print(lin_reg_2.predict(poly_reg.fit_transform(6.5)))
